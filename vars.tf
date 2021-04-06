@@ -13,7 +13,10 @@ variable "tag"{
   default = "mars"
 }
 
-
+variable "key_pair_name"{
+  type = string
+  default = "devtest"
+}
 
 
 //variable "dbs"{

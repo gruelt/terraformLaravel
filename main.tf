@@ -12,6 +12,10 @@ resource "aws_instance" "bastion"{
     		Name = "${var.tag}_bastion"
   	}
 
+	key_name = var.key_pair_name
+
+	subnet_id = aws_subnet.my-vpc-subnet.id
+
 	associate_public_ip_address= true
 
 	vpc_security_group_ids = [
@@ -19,6 +23,9 @@ resource "aws_instance" "bastion"{
 	]
 
 }
+
+
+
 
 
 
