@@ -19,12 +19,12 @@ resource "aws_security_group" "http-lemp" {
 
 #ssh traffic
 resource "aws_security_group" "ssh-bastion" {
-  name = "ssh-tera-access-group"
+  name = "ssh-bastion-access-group"
   description = "Allow traffic on port 22  (SSH)"
   vpc_id = aws_vpc.my-vpc.id
 
   tags = {
-    Name = "SSH Inbound Traffic Security Group"
+    Name = "SSH Inbound Traffic Security Group + All outbound"
   }
 
   ingress {
