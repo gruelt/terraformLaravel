@@ -1,5 +1,5 @@
 #http traffic
-resource "aws_security_group" "http-lemp" {
+resource "aws_security_group" "http-web" {
   name = "http-tera-access-group"
   description = "Allow traffic on port 80 (HTTP)"
   vpc_id = aws_vpc.my-vpc.id
@@ -15,6 +15,17 @@ resource "aws_security_group" "http-lemp" {
       "0.0.0.0/0"
     ]
   }
+    ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+  }
+
+
+
 }
 
 #ssh traffic
@@ -24,7 +35,7 @@ resource "aws_security_group" "ssh-bastion" {
   vpc_id = aws_vpc.my-vpc.id
 
   tags = {
-    Name = "SSH Inbound Traffic Security Group + All outbound"
+    Name = "SSH Inbound Traffic Security Group"
   }
 
   ingress {
@@ -36,6 +47,21 @@ resource "aws_security_group" "ssh-bastion" {
     ]
   }
 
+
+}
+
+#all out
+resource "aws_security_group" "all-out" {
+   name = "all-out-access-group"
+  description = "Allow outport 22  (SSH)"
+  vpc_id = aws_vpc.my-vpc.id
+
+  tags = {
+    Name = "all outbound Traffic Security Group "
+  }
+
+
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -43,7 +69,6 @@ resource "aws_security_group" "ssh-bastion" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
 
 
 
