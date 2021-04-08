@@ -9,4 +9,3 @@ terraform apply
 
 #deploy conf on every host
 ansible-playbook -i ansible/inventory ansible/playbook.yml
-
