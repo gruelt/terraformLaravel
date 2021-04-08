@@ -1,0 +1,7 @@
+[bastion]
+${bastion_ip}
+
+[web]
+%{ for index, web_ip in web_ips ~}
+${web_ip}
+%{ endfor ~}

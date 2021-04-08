@@ -27,18 +27,19 @@ resource "aws_instance" "bastion"{
 
 
 resource "aws_instance" "web"{
+	count = 2
 	ami= "ami-0d6aecf0f0425f42a"
         instance_type = "t2.micro"
 
 	tags = {
-    		Name = "${var.tag}_nginx"
+    		Name = "${var.tag}_${count.index}_nginx"
   	}
 
 	key_name = var.key_pair_name
 
 	subnet_id = aws_subnet.my-vpc-subnet.id
 
-	private_ip = "192.168.10.10"
+	private_ip = "192.168.10.${count.index+10}"
 
 	associate_public_ip_address= true
 

@@ -11,15 +11,27 @@ output "bastion_ip" {
 
 output "nginx_id" {
   description = "ID of the EC2 bastion"
-  value       = aws_instance.web.id
+  value       = aws_instance.web.*.id
 }
 
 output "nginx_ip" {
   description = "IP of the EC2 bastion"
-  value       = aws_instance.web.private_ip
+  value       = aws_instance.web.*.private_ip
 }
 
 output "nginx_public_ip" {
   description = "IP of the nginx"
-  value       = aws_instance.web.public_ip
+  value       = aws_instance.web.*.public_ip
+}
+
+
+### The Ansible inventory file
+resource "local_file" "AnsibleInventory" {
+ content = templatefile("inventory.tmpl",
+ {
+   bastion_ip = aws_instance.bastion.public_ip,
+   web_ips = aws_instance.web.*.public_ip
+ }
+ )
+ filename = "ansible/inventory"
 }
