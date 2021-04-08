@@ -18,3 +18,8 @@ output "nginx_ip" {
   description = "IP of the EC2 bastion"
   value       = aws_instance.web.private_ip
 }
+
+output "nginx_public_ip" {
+  description = "IP of the nginx"
+  value       = aws_instance.web.public_ip
+}

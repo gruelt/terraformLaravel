@@ -40,7 +40,9 @@ resource "aws_instance" "web"{
 
 	private_ip = "192.168.10.10"
 
-	associate_public_ip_address= false
+	associate_public_ip_address= true
+
+
 
 	vpc_security_group_ids = [
 	  aws_security_group.ssh-bastion.id,

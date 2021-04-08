@@ -1,0 +1,35 @@
+- name: Configure webserver with nginx/php for laravel
+  hosts: web
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  become: True
+  remote_user: ubuntu
+  become_method: sudo
+  tasks:
+    - name: install nginx
+      apt:
+        name: nginx
+        update_cache: yes
+    - name: copy nginx config file
+      copy:
+        src: files/nginx.conf
+        dest: /etc/nginx/sites-available/default
+    - name: enable configuration
+      file:
+        dest: /etc/nginx/sites-enabled/default
+        src: /etc/nginx/sites-available/default
+        state: link
+    - name: copy index.php
+      copy:
+        src: files/index.php
+        dest: /var/www/
+        mode: 0644
+
+    - name: install php-fpm
+      apt:
+        name: php7.4-fpm
+        update_cache: yes
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
