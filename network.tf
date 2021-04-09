@@ -37,6 +37,8 @@ resource "aws_subnet" "my-vpc-subnet" {
   #Ce subnet prend tout l'espace CIDR du VPC
   cidr_block              = "192.168.10.0/24"
 
+  availability_zone = "eu-west-3a"
+
   #Ce paramètre permet de faire en sorte qu'une instance lancée dans ce subnet n'a, par défaut, pas
   #d'IP publique sauf si autrement spécifié.
   map_public_ip_on_launch = false
@@ -45,6 +47,26 @@ resource "aws_subnet" "my-vpc-subnet" {
     Name = "${var.tag}-public-vpc-subnet"
   }
 }
+
+#Ajout du subnet dbs
+resource "aws_subnet" "my-vpc-subnet-db" {
+  #A nouveau, le VPC dans lequel on crée le subnet. On préfère une référence à hard-coder le
+  #nom du VPC, ce qui rend les changements faciles.
+  vpc_id                  = aws_vpc.my-vpc.id
+  #Ce subnet prend tout l'espace CIDR du VPC
+  cidr_block              = "192.168.20.0/24"
+
+  availability_zone = "eu-west-3b"
+
+  #Ce paramètre permet de faire en sorte qu'une instance lancée dans ce subnet n'a, par défaut, pas
+  #d'IP publique sauf si autrement spécifié.
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "${var.tag}-public-vpc-subnet-db"
+  }
+}
+
 
 
 
@@ -71,4 +93,13 @@ resource "aws_route_table_association" "my-vpc-routing-table-association" {
   subnet_id      = aws_subnet.my-vpc-subnet.id
   #Avec la table de routage précédente.
   route_table_id = aws_route_table.my-vpc-routing-table.id
+}
+
+
+#subnet des dbs
+resource "aws_db_subnet_group" "db_subnet_group" {
+  name       = "mariadb_db_subnet_group_${var.tag}"
+  subnet_ids = [aws_subnet.my-vpc-subnet.id,aws_subnet.my-vpc-subnet-db.id]
+
+
 }

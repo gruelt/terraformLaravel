@@ -24,6 +24,10 @@ output "nginx_public_ip" {
   value       = aws_instance.web.*.public_ip
 }
 
+output "mariadb_private_endpoint" {
+  description = "Endpoint mariadb"
+  value    = aws_db_instance.default.endpoint
+}
 
 ### The Ansible inventory file
 resource "local_file" "AnsibleInventory" {

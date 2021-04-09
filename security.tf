@@ -71,4 +71,18 @@ resource "aws_security_group" "all-out" {
 }
 
 
+resource "aws_security_group" "mysql" {
+  vpc_id = aws_vpc.my-vpc.id
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "TCP"
+    cidr_blocks = [aws_vpc.my-vpc.cidr_block]
+  }
+
+
+}
+
+
 

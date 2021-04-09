@@ -29,6 +29,10 @@
       apt:
         name: php7.4-fpm
         update_cache: yes
+    - name: install mysql-client
+      apt:
+        name: mysql-client
+        update_cache: yes
     - name: restart nginx
       service:
         name: nginx
