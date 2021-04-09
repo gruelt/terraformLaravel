@@ -24,6 +24,11 @@
         src: files/index.php
         dest: /var/www/
         mode: 0644
+    - name: copy .env
+      copy:
+        src: files/.env
+        dest: /var/www/
+        mode: 0644
 
     - name: install php-fpm
       apt:
@@ -37,3 +42,7 @@
       service:
         name: nginx
         state: restarted
+    - name: install composer
+      apt:
+        name: composer
+        update_cache: yes

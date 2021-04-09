@@ -63,7 +63,7 @@ resource "aws_db_instance" "default" {
   instance_class       = "db.t2.micro"
   name                 =  var.tag
   username             =  var.tag
-  password             = "foobarbaz"
+  password             = var.db_password
   db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
   skip_final_snapshot  = true
   publicly_accessible = false

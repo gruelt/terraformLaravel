@@ -18,6 +18,11 @@ variable "key_pair_name"{
   default = "devtest"
 }
 
+variable "db_password"{
+  type = string
+  default = "changeme"
+}
+
 
 //variable "dbs"{
 //        type = map(string)
