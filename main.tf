@@ -3,7 +3,7 @@ provider "aws"{
 }
 
 
-
+//Bastion for ssh
 resource "aws_instance" "bastion"{
 	ami= "ami-0d6aecf0f0425f42a"
         instance_type = "t2.micro"
@@ -25,7 +25,7 @@ resource "aws_instance" "bastion"{
 
 }
 
-
+//Aws nginx/php instances
 resource "aws_instance" "web"{
 	count = 1
 	ami= "ami-0d6aecf0f0425f42a"
@@ -52,10 +52,11 @@ resource "aws_instance" "web"{
 	]
 
 
-	#user_data = file("nginx/installnginx.sh")
+
 
 }
 
+//Database
 resource "aws_db_instance" "default" {
   allocated_storage    = 10
   engine               = "mariadb"
@@ -76,6 +77,14 @@ resource "aws_db_instance" "default" {
   	}
 
 }
+
+
+resource "null_resource" "ansible_all" {
+	provisioner "local-exec" {
+      command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/inventory ansible/playbook.yml"
+	}
+}
+
 
 
 
