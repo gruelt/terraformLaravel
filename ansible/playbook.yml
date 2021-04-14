@@ -24,16 +24,21 @@
         src: files/index.php
         dest: /var/www/
         mode: 0644
-    - name: copy .env
-      copy:
-        src: files/.env
-        dest: /var/www/
-        mode: 0644
 
-    - name: install php-fpm
+    - name: install php/fpm
       apt:
-        name: php7.4-fpm
+        pkg:
+          - php7.4-fpm
+          - php7.4-xml
+          - php7.4-mysql
+          - php7.4-zip
+          - php7.4-mbstring
+          - php7.4-gd
+          - unzip
+          - nodejs
+          - npm
         update_cache: yes
+
     - name: install mysql-client
       apt:
         name: mysql-client
@@ -42,7 +47,80 @@
       service:
         name: nginx
         state: restarted
-    - name: install composer
-      apt:
-        name: composer
-        update_cache: yes
+
+
+    - name: Check if composer exists
+      stat:
+        path: /usr/local/bin/composer
+        checksum_algorithm: sha256
+      register: composer_file
+    - name: Download Composer
+      get_url:
+        url: https://getcomposer.org/installer
+        dest: /root/composer-setup.php
+      when: >
+        composer_file.stat.isreg is not defined or
+        not composer_file.stat.isreg or
+        composer_file.stat.checksum != 'c3b2bc477429c923c69f7f9b137e06b2a93c6a1e192d40ffad1741ee5d54760d'
+    - name: Add composer
+      command: php /root/composer-setup.php --version=2.0.4 --install-dir=/usr/local/bin --filename=composer
+      when: >
+        composer_file.stat.isreg is not defined or
+        not composer_file.stat.isreg or
+        composer_file.stat.checksum != 'c3b2bc477429c923c69f7f9b137e06b2a93c6a1e192d40ffad1741ee5d54760d'
+
+
+    - name: Recursively remove old larave
+      file:
+        path: /var/www/laravel
+        state: absent
+
+
+#    - name: Download and installs a fresh laravel
+#      composer:
+#        command: create-project
+#        arguments: laravel/laravel laravel
+#        working_dir: /var/www
+
+    - name: Clone a repo
+      git:
+        repo: https://github.com/gruelt/laragym
+        dest: /var/www/laravel
+
+    - name: copy .env
+      copy:
+        src: files/.env
+        dest: /var/www/laravel
+        mode: 0644
+
+    - name: Recursively change ownership of app directory
+      file:
+        path: /var/www/laravel
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+
+
+
+
+
+
+#    - name: composer update
+#      composer:
+#        command: update
+#        working_dir: /var/www/laravel
+#
+#    - name: composer install
+#      composer:
+#        command: install
+#        working_dir: /var/www/laravel
+
+    - name: npm install
+      npm:
+        path: /var/www/laravel
+
+
+
+
