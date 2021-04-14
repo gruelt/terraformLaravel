@@ -29,6 +29,11 @@ output "mariadb_private_endpoint" {
   value    = aws_db_instance.default.endpoint
 }
 
+output "loadbalancer_dns" {
+  description = "dns load balancer"
+  value = aws_lb.myloadbalancer.dns_name
+}
+
 ### The Ansible inventory file
 resource "local_file" "AnsibleInventory" {
  content = templatefile("templates/inventory.tmpl",

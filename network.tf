@@ -48,6 +48,25 @@ resource "aws_subnet" "my-vpc-subnet" {
   }
 }
 
+#Ajout du subnet désiré
+resource "aws_subnet" "my-vpc-subnet-2" {
+  #A nouveau, le VPC dans lequel on crée le subnet. On préfère une référence à hard-coder le
+  #nom du VPC, ce qui rend les changements faciles.
+  vpc_id                  = aws_vpc.my-vpc.id
+  #Ce subnet prend tout l'espace CIDR du VPC
+  cidr_block              = "192.168.30.0/24"
+
+  availability_zone = "eu-west-3b"
+
+  #Ce paramètre permet de faire en sorte qu'une instance lancée dans ce subnet n'a, par défaut, pas
+  #d'IP publique sauf si autrement spécifié.
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "${var.tag}-public-vpc-subnet"
+  }
+}
+
 #Ajout du subnet dbs
 resource "aws_subnet" "my-vpc-subnet-db" {
   #A nouveau, le VPC dans lequel on crée le subnet. On préfère une référence à hard-coder le

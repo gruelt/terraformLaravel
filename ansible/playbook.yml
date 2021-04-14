@@ -76,16 +76,16 @@
         state: absent
 
 
-#    - name: Download and installs a fresh laravel
-#      composer:
-#        command: create-project
-#        arguments: laravel/laravel laravel
-#        working_dir: /var/www
+    - name: Download and installs a fresh laravel
+      composer:
+        command: create-project
+        arguments: laravel/laravel laravel
+        working_dir: /var/www
 
-    - name: Clone a repo
-      git:
-        repo: https://github.com/gruelt/laragym
-        dest: /var/www/laravel
+#    - name: Clone a repo
+#      git:
+#        repo: https://github.com/gruelt/laragym
+#        dest: /var/www/laravel
 
     - name: copy .env
       copy:
@@ -106,16 +106,16 @@
 
 
 
+#Composer/NPM
+    - name: composer update
+      composer:
+        command: update
+        working_dir: /var/www/laravel
 
-#    - name: composer update
-#      composer:
-#        command: update
-#        working_dir: /var/www/laravel
-#
-#    - name: composer install
-#      composer:
-#        command: install
-#        working_dir: /var/www/laravel
+    - name: composer install
+      composer:
+        command: install
+        working_dir: /var/www/laravel
 
     - name: npm install
       npm:

@@ -78,12 +78,12 @@ resource "aws_db_instance" "default" {
 
 }
 
-
-resource "null_resource" "ansible_all" {
-	provisioner "local-exec" {
-      command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/inventory ansible/playbook.yml"
-	}
-}
+// not working , have to wait for the end of creation
+//resource "null_resource" "ansible_all" {
+//	provisioner "local-exec" {
+//      command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/inventory ansible/playbook.yml"
+//	}
+//}
 
 
 
