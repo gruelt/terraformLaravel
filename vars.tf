@@ -2,9 +2,15 @@
 
 
 ##Entrée DNS route 53
-variable "dns"{
+variable "dnsid"{
   type = string
-  default = "mondns.org"
+  default = "Z03972671ZKB1454RWWXI"
+}
+
+##Entrée DNS route 53
+variable "dnszone"{
+  type = string
+  default = "flipsalto.fr"
 }
 
 ##tag global projet
@@ -24,13 +30,3 @@ variable "db_password"{
 }
 
 
-//variable "dbs"{
-//        type = map(string)
-//        default={
-//                "dev1" = "toto"
-//                "dev2" = "tata"
-//#                "dev3" = "titi"
-//#               "thomas" = "mypass"
-//#               "rapido" = "rapidosss"
-//        }
-//}
