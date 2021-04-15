@@ -11,7 +11,7 @@ resource "aws_route53_record" "bastion_dns" {
 
 resource "aws_route53_record" "lb_dns" {
   zone_id = var.dnsid
-  name    = "wwwgit add .${var.dnszone}"
+  name    = "www.${var.dnszone}"
   type    = "CNAME"
   ttl     = "300"
   records = [aws_lb.myloadbalancer.dns_name]

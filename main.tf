@@ -67,7 +67,11 @@ resource "aws_db_instance" "default" {
   password             = var.db_password
   db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
   skip_final_snapshot  = true
+	maintenance_window      = "Mon:06:00-Mon:09:00"
+  backup_window           = "09:01-11:00"
+  backup_retention_period = 30
   publicly_accessible = false
+
 	vpc_security_group_ids = [
 	aws_security_group.mysql.id
 	]
