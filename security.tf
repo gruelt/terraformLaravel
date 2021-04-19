@@ -28,6 +28,29 @@ resource "aws_security_group" "http-web" {
 
 }
 
+#http traffic
+resource "aws_security_group" "https-web" {
+  name = "https-tera-access-group"
+  description = "Allow traffic on port 80 (HTTP)"
+  vpc_id = aws_vpc.my-vpc.id
+  tags = {
+    Name = "HTTP Inbound Traffic Security Group"
+  }
+
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+  }
+
+
+
+
+}
+
 #ssh traffic
 resource "aws_security_group" "ssh-bastion" {
   name = "ssh-bastion-access-group"
